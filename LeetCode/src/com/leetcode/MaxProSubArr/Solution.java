@@ -3,8 +3,10 @@ package com.leetcode.MaxProSubArr;
 public class Solution {
 
 	public static void main(String[] args) {
+		int[] data = {1, 2, 3, 4};
+		
 		Solution s = new Solution();
-		String res = s.reverseWords(" aaaa bbbb    cccc dddd     ");
+		int res = s.maxProduct(data);
 
 		output(res);
 	}
@@ -17,29 +19,8 @@ public class Solution {
 		System.out.println(Integer.toString(i));
 	}
 
-	public String reverseWords(String s) {
-		s = s.trim();
-		int len = s.length();
-		String world = "";
-		String res = "";
-
-		for (int i = 0; i < len; i++) {
-			char curChar = s.charAt(i);
-
-			if (curChar != ' ') {
-				world = world + String.valueOf(curChar);
-			} else {
-				if (world != "") {
-					res = world + " " + res;
-					world = "";
-				}
-			}
-
-			if (i == len - 1) {
-				res = world + " " + res;
-			}
-		}
-
-		return res.trim();
-	}
+    public int maxProduct(int[] A) {
+        
+    	return 0;
+    }
 }
