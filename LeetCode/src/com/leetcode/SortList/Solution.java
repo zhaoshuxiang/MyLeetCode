@@ -1,23 +1,87 @@
 package com.leetcode.SortList;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
 public class Solution {
 
+	public static String testData[] = {};
+
 	public static void main(String[] args) {
-		ListNode listNode1 = new ListNode(5);
-		ListNode listNode2 = new ListNode(5);
-		ListNode listNode3 = new ListNode(2);
-		ListNode listNode4 = new ListNode(8);
-		ListNode listNode5 = new ListNode(6);
+		ListNode beginNode = null, endNode = null;
 
-		listNode1.next = listNode2;
-		listNode2.next = listNode3;
-		listNode3.next = listNode4;
-		listNode4.next = listNode5;
+		// 读取文件里的测试数据
+		try {
+			String dataStr = "";
+			String filePath = "C:\\Users\\Shuxiang\\Desktop\\a.txt";
+			File fileName = new File(filePath);
+			InputStreamReader reader = new InputStreamReader(
+					new FileInputStream(fileName));
 
-		// output(listNode1);
+			BufferedReader br = new BufferedReader(reader); // 建立一个对象，它把文件内容转成计算机能读懂的语言
 
+			dataStr = br.readLine();
+			
+			
+			testData = dataStr.split(",");
+			
+//			while (dataStr != null) {
+//				dataStr = br.readLine(); // 一次读入一行数据
+//				System.out.println(dataStr);
+//			}
+			
+			
+			
+			br.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		for (int i = 0, len = testData.length; i < len; i++) {
+			if (0 == i) {
+				beginNode = new ListNode( Integer.parseInt(testData[i]));
+				endNode = beginNode;
+			} else {
+				endNode.next = new ListNode(Integer.parseInt(testData[i]));
+				endNode = endNode.next;
+			}
+		}
+
+//		output(beginNode)
+		long a = System.currentTimeMillis();
 		Solution s = new Solution();
-		s.sortList(listNode1);
+		ListNode res = s.sortList(beginNode);
+		long b = System.currentTimeMillis();
+		
+		System.out.println(Long.toString(b - a));
+//		output(res);
+		
+		// 将排序结果写到文件里
+		try {
+			String filePath = "C:\\Users\\Shuxiang\\Desktop\\a_f.txt";
+			File fileName = new File(filePath);
+			OutputStreamWriter reader = new OutputStreamWriter(
+					new FileOutputStream(fileName));
+			
+			BufferedWriter out = new BufferedWriter(reader); 
+			
+			while(null != res.next) {
+				out.write(Integer.toString(res.next.val));
+				res = res.next;
+			}
+			
+            out.flush(); // 把缓存区内容压入文件  
+            out.close(); // 最后记得关闭文件  
+			
+		} catch( Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void output(ListNode listNode) {
@@ -35,11 +99,18 @@ public class Solution {
 	}
 
 	public ListNode sortList(ListNode head) {
-		ListNode selNode = head;
-		ListNode curNode = head.next;
-		ListNode smallList = null, biggerList = null, temp = null;
+		if (null == head) {
+			return head;
+		}
 
+		ListNode selNode = head, curNode = null;
+		ListNode smallList = null, smallListEnd = null;
+		ListNode biggerList = null, biggerListEnd = null;
+		ListNode temp = null;
+
+		curNode = head.next;
 		selNode.next = null;
+
 		if (curNode == null) {
 			smallList = head;
 		} else {
@@ -49,55 +120,48 @@ public class Solution {
 				if (curNode.val < selNode.val) {
 					if (null == smallList) {
 						smallList = curNode;
+						smallListEnd = curNode;
 					} else {
-						smallList = this.append(smallList, curNode);
+						smallListEnd.next = curNode;
+						smallListEnd = curNode;
 					}
 				} else {
 					if (null == biggerList) {
 						biggerList = curNode;
+						biggerListEnd = curNode;
 					} else {
-						biggerList = this.append(biggerList, curNode);
+						biggerListEnd.next = curNode;
+						biggerListEnd = curNode;
 					}
 				}
 
 				curNode = temp;
 			}
 
-			if (smallList != null) {
+			// 递归分治
+			if (null != smallList && null != smallList.next) {
 				smallList = this.sortList(smallList);
 			}
 
-			if (biggerList != null) {
+			if (null != biggerList && null != biggerList.next) {
 				biggerList = this.sortList(biggerList);
 			}
-			
-			output(smallList);
-			output(selNode);
-			output(biggerList);
 
-			smallList = this.append(smallList, selNode);
-			smallList = this.append(smallList, biggerList);
-		}
-		
-		output(smallList);
-		
-		return smallList;
-	}
+			// 连接
+			if (smallList == null) {
+				selNode.next = biggerList;
+				smallList = selNode;
+			} else {
+				smallListEnd = smallList;
+				while (null != smallListEnd.next) {
+					smallListEnd = smallListEnd.next;
+				}
 
-	public ListNode append(ListNode head, ListNode nodeList) {
-		ListNode lastNode = head;
-
-		if (head != null) {
-
-			while (lastNode.next != null) {
-				lastNode = lastNode.next;
+				smallListEnd.next = selNode;
+				selNode.next = biggerList;
 			}
-
-			lastNode.next = nodeList;
-		} else {
-			head = nodeList;
 		}
-		
-		return head;
+
+		return smallList;
 	}
 }
