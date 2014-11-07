@@ -1,4 +1,4 @@
-package com.leetcodeRemoveDuplicatesListNodeII;
+package com.leetcode.RemoveDuplicatesListNodeII;
 
 public class ListNode {
 	int val;
