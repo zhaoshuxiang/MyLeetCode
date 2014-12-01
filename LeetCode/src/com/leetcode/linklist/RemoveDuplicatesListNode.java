@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.leetcode.RemoveListNode;
+package com.leetcode.linklist;
 
 import com.leetcode.base.ListNode;
 
@@ -11,10 +11,10 @@ import com.leetcode.base.ListNode;
  *
  * @author Shuxiang
  */
-public class Solution {
+public class RemoveDuplicatesListNode {
 
     public static void main(String[] args) {
-        int testData[] = {1, 2, 3, 4, 5};
+        int testData[] = {1, 1, 2, 3, 3};
         
         ListNode beginNode = null, endNode = null;
         for (int i = 0, len = testData.length; i < len; i++) {
@@ -29,7 +29,7 @@ public class Solution {
 
         output(beginNode);
 
-        ListNode res = (new Solution()).removeNthFromEnd(beginNode, 11);
+        ListNode res = (new RemoveDuplicatesListNode()).deleteDuplicates(beginNode);
 
         output(res);
     }
@@ -47,45 +47,25 @@ public class Solution {
             System.out.println("null");
         }
     }
-
-    public ListNode removeNthFromEnd(ListNode head, int n) {
+    
+    public ListNode deleteDuplicates(ListNode head) {
         if (null == head) {
             return null;
         }
         
-        ListNode cur = head, end = null;
-        int count = 1;
+        ListNode cur = head, passNode = head, repeatNode = head;
         
         while(null != cur.next) {
-            count = count + 1;
             cur = cur.next;
-        }
-        
-        ListNode last = null;
-        
-        n = n % count;
-                
-        if (0 == n) {
-            n = count;
-        }
-        
-        n = count - n;
-        
-        // 删除第一个
-        if (0 == n) {
-            return head.next;
-        }
-        
-        cur = head;
-        for(int i = 0; i < n; i++) {
-            last = cur;
-            cur = cur.next;
-        }
-        
-        if (cur.next != null) {
-            last.next = cur.next;
-        } else {
-            last.next = null;
+            
+            if (cur.val != passNode.val) {
+                passNode.next = cur;
+                passNode = cur;
+            } else {
+                if (cur.next == null) {
+                    passNode.next = null;
+                }
+            }
         }
         
         return head;

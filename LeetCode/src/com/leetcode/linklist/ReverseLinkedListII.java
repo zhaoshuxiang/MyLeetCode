@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.leetcode.RemoveListNode;
+package com.leetcode.linklist;
 
 import com.leetcode.base.ListNode;
 
@@ -11,10 +11,10 @@ import com.leetcode.base.ListNode;
  *
  * @author Shuxiang
  */
-public class Solution {
+public class ReverseLinkedListII {
 
     public static void main(String[] args) {
-        int testData[] = {1, 2, 3, 4, 5};
+        int testData[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
         
         ListNode beginNode = null, endNode = null;
         for (int i = 0, len = testData.length; i < len; i++) {
@@ -29,7 +29,7 @@ public class Solution {
 
         output(beginNode);
 
-        ListNode res = (new Solution()).removeNthFromEnd(beginNode, 11);
+        ListNode res = (new ReverseLinkedListII()).reverseBetween(beginNode, 4, 8);
 
         output(res);
     }
@@ -48,44 +48,49 @@ public class Solution {
         }
     }
 
-    public ListNode removeNthFromEnd(ListNode head, int n) {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
         if (null == head) {
             return null;
         }
         
-        ListNode cur = head, end = null;
-        int count = 1;
-        
-        while(null != cur.next) {
-            count = count + 1;
+        ListNode cur = head, preBegin = null, begin = null, end = null, endNext = null, tmp = null;
+        int i = 1;
+        while(null != cur) {
+            
+            if (1 == m) {
+                begin = head;
+            } else {
+                if (i == m - 1) {
+                    preBegin = cur;
+                    begin = preBegin.next;
+                } 
+            }
+            
+            if(i == n) {
+                end = cur;
+                endNext = end;
+            }
+
             cur = cur.next;
+            i = i + 1;
         }
         
-        ListNode last = null;
-        
-        n = n % count;
-                
-        if (0 == n) {
-            n = count;
-        }
-        
-        n = count - n;
-        
-        // 删除第一个
-        if (0 == n) {
-            return head.next;
-        }
-        
-        cur = head;
-        for(int i = 0; i < n; i++) {
-            last = cur;
-            cur = cur.next;
-        }
-        
-        if (cur.next != null) {
-            last.next = cur.next;
+        if (1 != m) {
+            preBegin.next = end;
         } else {
-            last.next = null;
+            head = end;
+        }
+        
+        
+        // 从end后追加插入节点
+        while(begin != end) {
+            
+            tmp = begin.next;
+            
+            begin.next = endNext.next;
+            endNext.next = begin;
+            
+            begin = tmp;
         }
         
         return head;

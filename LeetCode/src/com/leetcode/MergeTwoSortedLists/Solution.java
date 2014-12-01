@@ -5,6 +5,8 @@
  */
 package com.leetcode.MergeTwoSortedLists;
 
+import com.leetcode.base.ListNode;
+
 /**
  *
  * @author Shuxiang
