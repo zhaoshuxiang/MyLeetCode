@@ -91,9 +91,7 @@ public class MinimumDepthOfBinaryTree {
             // 左边叶子节点
             if (null != root.left) {
                 this.curNodeLevel = this.curNodeLevel + 1;
-
                 this.minDepth(root.left);
-
                 this.curNodeLevel = this.curNodeLevel - 1;
 
             }
@@ -101,22 +99,15 @@ public class MinimumDepthOfBinaryTree {
             // 右边叶子节点
             if (null != root.right) {
                 this.curNodeLevel = this.curNodeLevel + 1;
-
                 this.minDepth(root.right);
-
                 this.curNodeLevel = this.curNodeLevel - 1;
             }
 
             // 是叶子节点
             if (null == root.left && null == root.right) {
-//                System.out.print(this.curNodeLevel + " ");
-
                 if (-1 == this.minLevel || this.curNodeLevel < this.minLevel) {
                     this.minLevel = this.curNodeLevel;
                 }
-
-//                System.out.print(this.minLevel + " ");
-//                System.out.print("\n");
             }
         } else {
             this.minLevel = 0;
@@ -136,9 +127,9 @@ public class MinimumDepthOfBinaryTree {
                     System.out.print(root.left.val + " ");
                 }
             }
-            
+
             System.out.print(root.val + " ");
-            
+
             // 右边叶子节点
             if (null != root.right) {
                 if (null != root.right.left || null != root.right.right) {
