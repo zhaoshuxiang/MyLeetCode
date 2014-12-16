@@ -37,13 +37,19 @@ public class SymmetricTree {
     }
 
     public boolean isSymmetric(TreeNode root) {
-        if(null == root) return true;
+        if (null == root) {
+            return true;
+        }
         return isMatch(root.left, root.right);
     }
-    
+
     public boolean isMatch(TreeNode left, TreeNode right) {
-        if (null == left && null == right) return true;
-        if (null != left && null ==right || null == left && null !=right || left.val != right.val) return false; 
+        if (null == left && null == right) {
+            return true;
+        }
+        if (null != left && null == right || null == left && null != right || left.val != right.val) {
+            return false;
+        }
         return isMatch(left.left, right.right) && isMatch(left.right, right.left);
     }
 }

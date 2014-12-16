@@ -1,8 +1,8 @@
 package com.leetcode.linklist;
 
 //import java.io.BufferedReader;
-
 import com.leetcode.base.ListNode;
+import com.leetcode.base.Tools;
 
 //import java.io.BufferedWriter;
 //import java.io.File;
@@ -11,45 +11,15 @@ import com.leetcode.base.ListNode;
 //import java.io.FileOutputStream;
 //import java.io.InputStreamReader;
 //import java.io.OutputStreamWriter;
-
 public class SortList {
-    
+
     public static void main(String[] args) {
-        int [] a = {4, 1, 3, 2, 8 , 9, 12, 10};
-        ListNode b = coverArrayToList(a);
-        
-    }
-    
-    public static ListNode coverArrayToList(int[] arr) {
-        ListNode beginNode = null, endNode = null;
+        int[] a = {4, 1, 3, 2, 8, 9, 12, 10};
 
-        for (int i = 0, len = arr.length; i < len; i++) {
-            if (0 == i) {
-                beginNode = new ListNode(arr[i]);
-                endNode = beginNode;
-            } else {
-                endNode.next = new ListNode(arr[i]);
-                endNode = endNode.next;
-            }
-        }
-        
-        endNode.next = beginNode;
+        ListNode b = Tools.coverArrayToList(a);
+        ListNode s = (new SortList()).sortList(b);
 
-        return beginNode;
-    }
-    
-    public static void output(ListNode listNode) {
-        if (listNode != null) {
-            System.out.print(Integer.toString(listNode.val) + " ");
-
-            if (null != listNode.next) {
-                output(listNode.next);
-            } else {
-                System.out.println("");
-            }
-        } else {
-            System.out.println("null");
-        }
+        Tools.outputLinkList(s);
     }
 
     public ListNode sortList(ListNode head) {
@@ -57,63 +27,53 @@ public class SortList {
             return head;
         }
 
-        ListNode selNode = head, curNode = null;
-        ListNode smallList = null, smallListEnd = null;
-        ListNode biggerList = null, biggerListEnd = null;
-        ListNode temp = null;
+        // 标准节点
+        ListNode t = head;
+        
+        // 当前的节点
+        ListNode c = head;
 
-        curNode = head.next;
-        selNode.next = null;
-
-        if (curNode == null) {
-            smallList = head;
-        } else {
-            while (curNode != null) {
-                temp = curNode.next;
-                curNode.next = null;
-                if (curNode.val < selNode.val) {
-                    if (null == smallList) {
-                        smallList = curNode;
-                        smallListEnd = curNode;
-                    } else {
-                        smallListEnd.next = curNode;
-                        smallListEnd = curNode;
-                    }
+        // 小于标准节点的
+        ListNode s = null;
+        ListNode sE = null;
+        
+        while(c.next != null) {
+            if (c.next.val < t.val) {
+                sE = c.next;
+                c.next = sE.next;
+                
+                if (null == s) {
+                    sE.next = null;
+                    s = sE;
                 } else {
-                    if (null == biggerList) {
-                        biggerList = curNode;
-                        biggerListEnd = curNode;
-                    } else {
-                        biggerListEnd.next = curNode;
-                        biggerListEnd = curNode;
-                    }
+                    s.next = sE;
                 }
-
-                curNode = temp;
-            }
-
-            if (null != smallList && null != smallList.next) {
-                smallList = this.sortList(smallList);
-            }
-
-            if (null != biggerList && null != biggerList.next) {
-                biggerList = this.sortList(biggerList);
-            }
-
-            if (smallList == null) {
-                selNode.next = biggerList;
-                smallList = selNode;
             } else {
-                smallListEnd = smallList;
-                while (null != smallListEnd.next) {
-                    smallListEnd = smallListEnd.next;
-                }
-
-                smallListEnd.next = selNode;
-                selNode.next = biggerList;
+               c = c.next; 
             }
         }
 
-        return smallList;
+        ListNode lN = sortList(s);
+        ListNode rN = sortList(t.next);
+
+
+
+        return join(lN, t, rN);
+    }
+
+    public ListNode join(ListNode a, ListNode b, ListNode c) {
+        ListNode l = a;
+
+        if (null != a) {
+            while (null != l.next) {
+                l = l.next;
+            }
+            
+            l.next = b;
+        }
+
+        b.next = c;
+
+        return null == a ? b : a;
     }
 }
