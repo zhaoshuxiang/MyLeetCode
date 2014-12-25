@@ -9,7 +9,9 @@ import com.leetcode.base.Tools;
 import com.leetcode.base.TreeNode;
 
 /**
- *
+ * 构建平衡二叉查找树(AVL)
+ * 如何修正非平衡二叉树？
+ * 
  * @author Shuxiang
  */
 public class ConvertSortedArrayToBST {

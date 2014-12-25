@@ -14,37 +14,55 @@ import java.util.ArrayList;
  * @author Shuxiang
  */
 public class SumRootToLeafNumbers {
+    private ArrayList<Integer> l = new ArrayList<Integer>();
     
     public static void main(String[] args) {
         ArrayList al = new ArrayList();
         
-        al.add(1);
-
-        al.add(null);
-        al.add(2);
-        al.add(3);
         al.add(4);
+
+        al.add(9);
+        al.add(0);
+        al.add(null);
+        al.add(1);
         
         TreeNode tree = Tools.creatTree(al);
-
-        SumRootToLeafNumbers t = new SumRootToLeafNumbers();
-        int res = t.sumNumbers(tree);
+        int res = (new SumRootToLeafNumbers()).sumNumbers(tree);
 
         System.out.print(res);
     }
     
-    
     public int sumNumbers(TreeNode root) {
-        int res = 0;
+        int sum = 0;
         
-        if (null != root) {
+        if( null != root) {
+            this.l.add(root.val);
             
+            if (null == root.left && null == root.right) {
+                sum = sum + s();
+                System.out.print(sum + " ");
+            } else {
+                sum = sum + sumNumbers(root.left);
+                sum = sum + sumNumbers(root.right);
+            }
             
-            
-            sumNumbers(root.left);
-            sumNumbers(root.right);
+            this.l.remove(this.l.size() - 1);
         }
         
-        return res;
+        return sum;
+    }
+    
+    public int s() {
+        ArrayList<Integer> a = this.l;
+        int len = a.size();
+        int sum = 0;
+        
+        for(int i = 0; i < len;i ++)  {
+            sum = sum + a.get(i) * (int)Math.pow(10, len - i - 1);
+        }
+        
+        
+        
+        return sum;
     }
 }

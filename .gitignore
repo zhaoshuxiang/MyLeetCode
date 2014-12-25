@@ -1,1 +1,11 @@
 /LeetCode/src/nbproject/private/
+.DS_Store
+/nbproject/private/
+build.xml
+
+*.mf
+
+*.xml
+
+*.properties
+/build/
